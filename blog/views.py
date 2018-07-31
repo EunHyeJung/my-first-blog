@@ -5,6 +5,7 @@ from django.utils import timezone
 from .forms import PostForm
 from .models import Post
 from django.contrib.auth.models import  User
+import uuid
 
 # Create your views here.
 
@@ -27,7 +28,7 @@ def post_new(request):
             post = form.save(commit=False)
             #post.author = request.user
 
-            post.author = User.objects.create_user(username="myusername", password="password", email="abc@testmail.com")
+            post.author = User.objects.create_user(username = str(uuid.uuid4()).replace("-", ""), password="password", email="abc@testmail.com")
             post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
@@ -42,7 +43,7 @@ def post_edit(request, pk):
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = User.objects.create_user(username="myusername", password="password", email="abc@testmail.com")
+            post.author = User.objects.create_user(username= str(uuid.uuid4()).replace("-", ""), password="password", email="abc@testmail.com")
             #post.author = request.user
             post.published_date = timezone.now()
             post.save()
